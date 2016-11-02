@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<synthetic xsi:schemaLocation="http://www.xebialabs.com/deployit/synthetic synthetic.xsd" xmlns="http://www.xebialabs.com/deployit/synthetic" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+    <type type="rundeck.ExecuteJob" extends="xlrelease.PythonScript" >
+        <property name="rundeckServer"
+                  label="Rundeck Server"
+                  kind="ci"
+                  referenced-type="rundeck.Server"
+                  category="input" />
+        <property name="jobIdentifier"
+                  label="Job Identifier" 
+                  category="input" />
+        <property name="jobOptions" 
+                  label="Job Options (optional)" 
+                  category="input" />
+        <property name="nodeFilters"
+                  kind="string"
+                  label="Node filters (optional)"
+                  category="input" />
+<!--
+        <property name="HipChatURL":
+                  kind="string"
+                  label="Hip Chat URL"
+                  category="input" />
+        <property name="HipChatStartMessage"
+                  kind="string"
+                  label="Hip Chat Start Message"
+                  category="input" />
+        <property name="HipChatStartColor"
+                  kind="string"
+                  label="Hip Chat Start Color"
+                  category="input" />
+        <property name="HipChatEndMessage"
+                  kind="string"
+                  label="Hip Chat End Message"
+                  category="input" />
+        <property name="HipChatEndColor"
+                  kind="string"
+                  label="Hip Chat End Color"
+                  category="input" />
+-->
+        <property name="output" category="output" />
+    </type>
+
+    <type type="rundeck.Server" extends="configuration.HttpConnection" />
+
+</synthetic>
