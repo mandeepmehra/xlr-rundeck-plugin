@@ -23,9 +23,10 @@ if rdAuthToken:
 else:
      rundeck = RundeckClient.builder().url(rdUrl).login(rdUsername, rdPassword).build()
 
-# Find the job in rundeck
-job    = rundeck.findJob(rundeckProject, rundeckJobGroup, rundeckJobName)
-runJob = RunJobBuilder.builder().setJobId(job.id).setOptions(jobOptions.toProperties()).build()
+runJob     = RunJobBuilder.builder().setJobId(rundeckJobIdentifier).setOptions(jobOptions.toProperties()).build()
+
+# Fetch t he job details - name , group etc.
+rundeckJobName = rundeck.getJob(rundeckJobIdentifier).getFullName()
 
 
 # Either wait for execution or fire and forget
@@ -33,15 +34,17 @@ if rundeckdWaitForJob == True :
   execution           = rundeck.runJob(runJob)
   rundeckJobStatus    = execution.status.toString()
   rundeckJobDuration  = execution.duration
-  print "Exececution of job %s succeeeded" % rundeckJobName
+  rundeckExecutionId  = execution.id
+  print "Execution #%s for job %s succeeded" % (rundeckExecutionId, rundeckJobName)
 
   # Task should fail if output is not SUCCEEDED
   if execution.status != RundeckExecution.ExecutionStatus.SUCCEEDED:
-     raise TypeError("Job %s execution failed" % rundeckJobName)
+     raise TypeError("Execution #%s for job %s FAILED" % (rundeckJobName,rundeckExecutionId))
 
 else:
    execution = rundeck.triggerJob(runJob)
    rundeckJobStatus   = "Execution started, check status at : %s" % execution.url
    rundeckJobDuration = -1
+   rundeckExecutionId = execution.id
    print rundeckJobStatus     
 
