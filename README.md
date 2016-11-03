@@ -8,7 +8,7 @@ This plugin is to trigger Rundeck job from XLR
 * **Requirements**
 	* **XL Release** 5.0.1+
 	* **Additional Runtime Libraries**
-	    * Extract the following jar's from the `xldp` release, and put them under XL_RELEASE_HOME/`lib`:
+	    * Copy the following jar's from the `src/client/`, and put them under `XL_RELEASE_HOME/lib`:
 	        * `rundeck-api-java-client-13.1.jar`
 	        
 
