@@ -22,9 +22,25 @@ sourceCompatibility = 1.7
 targetCompatibility = 1.7
 version = '1.0.0'
 
+
 repositories {
-    mavenLocal()
-    mavenCentral()
+  mavenLocal()
+  mavenCentral()
+  maven {
+      credentials {
+            username 'community-plugins'
+            password 'community'
+        }
+      url 'http://nexus.xebialabs.com/nexus/content/repositories/releases'
+    }
 }
+
+configurations {
+    distBundle {
+        transitive = false
+    }
+}
+
+
 
 
