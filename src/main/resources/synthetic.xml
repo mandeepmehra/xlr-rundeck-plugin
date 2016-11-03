@@ -1,47 +1,54 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <synthetic xsi:schemaLocation="http://www.xebialabs.com/deployit/synthetic synthetic.xsd" xmlns="http://www.xebialabs.com/deployit/synthetic" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-
     <type type="rundeck.ExecuteJob" extends="xlrelease.PythonScript" >
         <property name="rundeckServer"
                   label="Rundeck Server"
                   kind="ci"
                   referenced-type="rundeck.Server"
                   category="input" />
-        <property name="jobIdentifier"
-                  label="Job Identifier" 
-                  category="input" />
-        <property name="jobOptions" 
-                  label="Job Options (optional)" 
-                  category="input" />
-        <property name="nodeFilters"
-                  kind="string"
-                  label="Node filters (optional)"
-                  category="input" />
-<!--
-        <property name="HipChatURL":
-                  kind="string"
-                  label="Hip Chat URL"
-                  category="input" />
-        <property name="HipChatStartMessage"
-                  kind="string"
-                  label="Hip Chat Start Message"
-                  category="input" />
-        <property name="HipChatStartColor"
-                  kind="string"
-                  label="Hip Chat Start Color"
-                  category="input" />
-        <property name="HipChatEndMessage"
-                  kind="string"
-                  label="Hip Chat End Message"
-                  category="input" />
-        <property name="HipChatEndColor"
-                  kind="string"
-                  label="Hip Chat End Color"
-                  category="input" />
--->
-        <property name="output" category="output" />
+        <property name="rundeckProject"
+                  label="Project Name"
+                  category="input"
+                  required = "true"/>
+        <property name="rundeckJobGroup"
+                  label="Job Group"
+                  category="input"
+                  required = "false"/>
+        <property name="rundeckJobName"
+                  label="Job Name"
+                  category="input"
+                  required = "true"/>
+        <property name="rundeckdWaitForJob"
+                  label="Wait for Job completion"
+                  category="input"
+                  required = "false"
+                  kind = "boolean" />
+        <property name="rundeckJobOptions"
+                  kind = "map_string_string"
+                  label="Job Options (optional)"
+                  category="input"
+                  required="false" />
+
+        <!-- Output variables -->
+
+        <property name="rundeckJobStatus"
+                  category="output" 
+                  required="false" 
+                  description="Job status of rundeck execution" />
+        <property name="rundeckJobDuration" 
+                  category="output" 
+                  required="false" 
+                  description="Duration of job execution (only if Wait for Job is selected)" />
+
     </type>
 
-    <type type="rundeck.Server" extends="configuration.HttpConnection" />
+
+    <type type="rundeck.Server" extends="configuration.HttpConnection" >
+   
+        <property name="rundeckAuthToken" 
+                 required="false" 
+                 category="input" 
+                 description="Auth Token (optional if username and password are provided)" />
+    </type>
 
 </synthetic>
