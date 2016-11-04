@@ -23,10 +23,34 @@ if rdAuthToken:
 else:
      rundeck = RundeckClient.builder().url(rdUrl).login(rdUsername, rdPassword).build()
 
-runJob     = RunJobBuilder.builder().setJobId(rundeckJobIdentifier).setOptions(jobOptions.toProperties()).build()
 
-# Fetch t he job details - name , group etc.
-rundeckJobName = rundeck.getJob(rundeckJobIdentifier).getFullName()
+
+# Validate job exist and get the UUID
+# Not using findjobs as that matches a substring and retutns first match... !
+# Job names are not unique hence iterating through list udner the project and finding the matched one
+
+jobToRun  = None
+jobs      = rundeck.getJobs(rundeckProject);
+
+if rundeckJobGroup:
+   rdjobFullName = "%s%s%s" % (rundeckJobGroup,"/",rundeckJobName)
+else:
+    rdjobFullName = rundeckJobName
+
+
+for job in jobs:
+    if job.getFullName() == rdjobFullName:
+       jobToRun = job
+       break
+
+if jobToRun is None:
+   raise TypeError("No job found with name:\"%s\" in project: \"%s\" \n" % (rdjobFullName, rundeckProject))
+else:
+     print "Job found: %s in project: %s \n" % (jobToRun.getFullName(),rundeckProject)
+
+# Set the Job Options
+rundeckJobName = jobToRun.getFullName()
+runJob         = RunJobBuilder.builder().setJobId(jobToRun.id).setOptions(jobOptions.toProperties()).build()
 
 
 # Either wait for execution or fire and forget
@@ -35,16 +59,17 @@ if rundeckdWaitForJob == True :
   rundeckJobStatus    = execution.status.toString()
   rundeckJobDuration  = execution.duration
   rundeckExecutionId  = execution.id
-  print "Execution #%s for job %s succeeded" % (rundeckExecutionId, rundeckJobName)
+  print "Execution #%s for job %s succeeded\n" % (rundeckExecutionId, rundeckJobName)
 
   # Task should fail if output is not SUCCEEDED
   if execution.status != RundeckExecution.ExecutionStatus.SUCCEEDED:
-     raise TypeError("Execution #%s for job %s FAILED" % (rundeckJobName,rundeckExecutionId))
+     raise TypeError("Execution #%s for job %s FAILED\n" % (rundeckExecutionId, rundeckJobName))
 
 else:
    execution = rundeck.triggerJob(runJob)
-   rundeckJobStatus   = "Execution started, check status at : %s" % execution.url
+   rundeckJobStatus   = "%s\n" % execution.url
    rundeckJobDuration = -1
    rundeckExecutionId = execution.id
    print rundeckJobStatus     
+
 
