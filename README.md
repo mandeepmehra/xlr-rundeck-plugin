@@ -14,5 +14,5 @@ This plugin is to trigger Rundeck job from XLR
 
 # Installation #
 
-Place the plugin JAR file into your `SERVER_HOME/plugins` directory.   Make sure you have additional runtime libraries mentioned in the requirements section also installed in the correct directory.
+Place the plugin JAR file into your `XL_RELEASE_HOME/lib` directory.   Make sure you have additional runtime libraries mentioned in the requirements section also installed in the correct directory.
 
